@@ -14,3 +14,44 @@ console.log("hello");
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
+
+
+  var database = firebase.database();
+
+  $("#newTrainAdd").on("click", function(event) {
+    event.preventDefault();
+
+    let trainName = $("#thatNewTrain")
+    .val().trim();
+
+    let destination = $("#thatNewDestination")
+    .val().trim();
+
+    let newTime = $("#thatNewTime")
+    .val().trim();
+
+    let frequency = $("#theNewFrequency")
+    .val().trim();
+
+    let tempTrain = {
+        name: trainName,
+        destination: destination,
+        newTime: newTime,
+        frequency: frequency
+    };
+
+    database.ref().push(tempTrain);
+
+    console.log("Values were pushed to firebase");
+    console.log(tempTrain.name);
+    console.log(tempTrain.destination);
+    console.log(tempTrain.firstTrain);
+    console.log(tempTrain.frequency);
+
+    alert("Train added");
+
+    $("#thatNewTrain").val("");
+    $("#thatNewDestination").val("");
+    $("#thatNewTime").val("");
+    $("#theNewFrequency").val("");
+  });

@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <table class="table">
+      <table class="table" id="tableSchedule">
         <thead class="thead-dark">
           <h1 class="theHead">
             Current Train Schedule
@@ -40,7 +40,7 @@
             </tr>
           </h1>
         </thead>
-        <tbody class="newTrainList">
+        <tbody id="newTrainList">
           <tr>
             <td>Chugga Coal</td>
             <td>No Man's Land</td>
@@ -74,8 +74,7 @@
         </div>
         <div class="form-group">
           <label for="inputTrainTime"
-            >First Train Time (HH:mm - military time)</label
-          >
+            >First Train Time (HH:mm - military time)</label>
           <input
             type="text"
             class="form-control"
@@ -93,7 +92,7 @@
           />
         </div>
       </form>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary" id="newTrainAdd">Submit</button>
     </div>
 
     <!-- Optional JavaScript -->
