@@ -6,17 +6,13 @@ console.log("hello");
     apiKey: "AIzaSyDLIkLqrzyWYYaqgJpexa-LxI_5CpzuXWo",
     authDomain: "train-scheduler-4fd71.firebaseapp.com",
     databaseURL: "https://train-scheduler-4fd71.firebaseio.com",
-    projectId: "train-scheduler-4fd71",
     storageBucket: "train-scheduler-4fd71.appspot.com",
-    messagingSenderId: "888050210280",
-    appId: "1:888050210280:web:6b0389f4857b059ed2405d",
-    measurementId: "G-2QWN5NHC28"
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
 
-  var database = firebase.database();
+  let database = firebase.database();
 
   $("#newTrainAdd").on("click", function(event) {
     event.preventDefault();
@@ -54,4 +50,45 @@ console.log("hello");
     $("#thatNewDestination").val("");
     $("#thatNewTime").val("");
     $("#theNewFrequency").val("");
+  });
+
+  database.ref().on("child_added", function(snapshot, prevChildKey) {
+      console.log(snapshot.val());
+
+      let snapName = snapshot.val().name;
+      let snapDestination = snapshot.val().destination;
+      let snapFirstTrain = snapshot.val().firstTrain;
+      let snapFrequency = snapshot. val().frequency;
+
+      let timeArr = snapFirstTrain.split("#thatNewTime:");
+      let trainTime = moment().hours(timeArr[0]).minutes(timeArr[1]);
+
+      let maxMoment = moment.max(moment(), trainTime);
+      let tMinutes;
+      let tArrival;
+
+      if (maxMoment === trainTime){
+          tArrival = trainTime.format("hh:mm A");
+          tMinutes = trainTime.diff(moment(), "minutes")
+      } else {
+        let diffTime = moment().diff(trainTime, "minutes");
+        let tRemainder = diffTime % snapFrequency;
+        tMinutes = snapFrequency - tRemainder;
+
+        tArrival = moment().add(tMinutes, "m").format("hh:mm A");
+      }
+
+      console.log("tMinutes: ", tMinutes);
+      console.log("tArrical: ", tArrival);
+
+      $("#newTrainList").append(`
+      <tr>
+        <th scope="row"> ${snapName}</th>
+        <td>${snapDestination}</td>
+        <td>${snapFrequency}</td>
+        <td>${tArrival}</td>
+        <td>${tMinutes}</td>
+      </tr>  
+        `)
+
   });
